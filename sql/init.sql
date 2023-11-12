@@ -1,0 +1,5 @@
+CREATE DATABASE IF NOT EXISTS `phonebook`
+/*!40100 DEFAULT CHARACTER SET utf8 */
+;
+
+USE `phonebook`;
