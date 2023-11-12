@@ -79,9 +79,10 @@ func (ts *PhoneListTestSuite) TestValid() {
 
 		err := su.Create(ctx, &user)
 		ts.Require().NoError(err)
-		ts.Require().Equal(uint(1), user.ID)
-		ts.Require().Equal(phoneNumber, user.Phones[0].Number)
-		ts.Require().Equal(address, user.Addresses[0].Address)
+		user2, err := su.Get(ctx, user.ID)
+		ts.Require().Equal("John Doe", user2.Name)
+		ts.Require().Equal(phoneNumber, user2.Phones[0].Number)
+		ts.Require().Equal(address, user2.Addresses[0].Address)
 	})
 
 	ts.Run("create a phone and address and assign to user", func() {

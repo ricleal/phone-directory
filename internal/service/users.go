@@ -45,6 +45,18 @@ func (s *userService) Create(ctx context.Context, u *entities.User) error {
 		Name: u.Name,
 	}
 
+	for _, p := range u.Phones {
+		user.Phones = append(user.Phones, repository.Phone{
+			Number: p.Number,
+		})
+	}
+
+	for _, a := range u.Addresses {
+		user.Addresses = append(user.Addresses, repository.Address{
+			Address: a.Address,
+		})
+	}
+
 	if err := s.repo.Create(ctx, user); err != nil {
 		return fmt.Errorf("could not create user: %w", err)
 	}

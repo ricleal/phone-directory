@@ -5,7 +5,6 @@ import (
 	"errors"
 	"fmt"
 	"os"
-	"time"
 
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/golang-migrate/migrate/v4"
@@ -39,9 +38,6 @@ func (s *Database) Close() error {
 }
 
 func (s *Database) Migrate() error {
-	s.db.SetMaxOpenConns(25)
-	s.db.SetMaxIdleConns(25)
-	s.db.SetConnMaxLifetime(5 * time.Minute)
 	driver, err := mysql.WithInstance(s.db, &mysql.Config{})
 	if err != nil {
 		return fmt.Errorf("failed to create migration driver: %w", err)
