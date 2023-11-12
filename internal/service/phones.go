@@ -19,6 +19,8 @@ func validatePhoneNumber(phoneNumber string) bool {
 	return rePhoneNumber.MatchString(phoneNumber)
 }
 
+//go:generate mockgen -source=phones.go -package=mock -destination=mock/phones.go
+
 // PhoneService is a domain service for phones.
 type PhoneService interface {
 	Create(ctx context.Context, u *entities.Phone) error

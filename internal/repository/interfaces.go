@@ -5,6 +5,8 @@ import (
 	"database/sql"
 )
 
+//go:generate mockgen -source=interfaces.go -package=mock -destination=mock/interfaces.go
+
 // DBTx represents a database transaction or connection interface.
 type DBTx interface {
 	Exec(query string, args ...interface{}) (sql.Result, error)

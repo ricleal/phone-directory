@@ -5,6 +5,9 @@ import (
 	"net/http"
 	"os/signal"
 	"phone-directory/api"
+	"phone-directory/internal/repository/persistent"
+	"phone-directory/internal/service"
+	"phone-directory/internal/store"
 	"syscall"
 	"time"
 
@@ -16,7 +19,16 @@ func main() {
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
-	h := api.NewHandler()
+	s, err := persistent.NewStorage()
+	if err != nil {
+		log.Fatal().Err(err).Msg("failed to initialize storage")
+	}
+	store := store.NewPersistentStore(s.DB())
+	us := service.NewUserService(store)
+	ps := service.NewPhoneService(store)
+	as := service.NewAddressService(store)
+
+	h := api.NewHandler(us, ps, as)
 	router, err := api.Router(h)
 	if err != nil {
 		log.Fatal().Err(err).Msg("failed to initialize router")

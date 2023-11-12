@@ -16,6 +16,9 @@ func validateAddress(address string) error {
 	return nil
 }
 
+//go:generate mockgen -source=addresses.go -package=mock -destination=mock/addresses.go
+
+// AddressService is a domain service for addresses.
 type AddressService interface {
 	Create(ctx context.Context, u *entities.Address) error
 	Get(ctx context.Context, id uint) (*entities.Address, error)

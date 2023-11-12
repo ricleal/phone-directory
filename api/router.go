@@ -5,12 +5,9 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
-	"github.com/rs/zerolog/log"
 
 	"phone-directory/internal/entities"
-	"phone-directory/internal/repository/persistent"
 	"phone-directory/internal/service"
-	"phone-directory/internal/store"
 )
 
 func Router(h *handler) (*gin.Engine, error) {
@@ -29,19 +26,15 @@ func Router(h *handler) (*gin.Engine, error) {
 
 type handler struct {
 	us service.UserService
+	ps service.PhoneService
+	as service.AddressService
 }
 
-func NewHandler() *handler {
-	s, err := persistent.NewStorage()
-	if err != nil {
-		log.Fatal().Err(err).Msg("failed to initialize storage")
-	}
-
-	store := store.NewPersistentStore(s.DB())
-	us := service.NewUserService(store)
-
+func NewHandler(us service.UserService, ps service.PhoneService, as service.AddressService) *handler {
 	return &handler{
 		us: us,
+		ps: ps,
+		as: as,
 	}
 }
 

@@ -16,6 +16,8 @@ func validateName(name string) error {
 	return nil
 }
 
+//go:generate mockgen -source=users.go -package=mock -destination=mock/users.go
+
 // UserService is a domain service for users.
 type UserService interface {
 	Create(ctx context.Context, u *entities.User) error
